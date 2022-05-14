@@ -21,6 +21,7 @@ async function run(){
         await client.connect();
         // console.log('database connected');
         const servicesCollection = client.db('doctors-portal').collection('services');
+        const bookingCollection = client.db('doctors-portal').collection('booking');
 
         /* calling database and get the data  */
         app.get('/services', async(req, res) =>{
@@ -41,7 +42,8 @@ async function run(){
 
           app.post('/booking', async(req, res) =>{
             const booking =  req.body;
-            const result = await servicesCollection.insertOne(booking);
+            const query = {treatment: booking.treatment, date: booking.date, patient: booking.patient}
+            const result = await bookingCollection.insertOne(booking);
             res.send(result);
           })
 
